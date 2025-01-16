@@ -46,16 +46,26 @@ public class GestioneProdotti {
         getTierProducts().forEach(System.out::println);
 
         //ESERCIZIO 1 GIORNO 2
-        System.out.println("Esercizio 1 Giorno 2");
+        System.out.println("Raggruppare gli Ordini per Cliente");
         StampaOrdini();
 
         //ESERCIZIO 2 GIORNO 2
-
+        System.out.println("Totale Vendite");
+        TotaleVendite().forEach((customer,total)->{
+            System.out.println("Cliente: " + customer + " " + "Totale :" + total);
+        });
 
         //ESERCIZIO 3 GIORNO 2
-//        System.out.println("Acquisto piu Costoso: ");
-//        AcquistoPiuCostoso();
+        System.out.println("Acquisto piu Costoso: ");
+        AcquistoPiuCostoso().forEach(System.out::println);
 
+        //ESERCIZIO 4 GIORNO 2
+        System.out.println("Prezzo Medio per Ordine: ");
+        System.out.println(MediaPrezzoOrdine());
+
+        //ESERCIZIO 5 GIORNO 2
+        System.out.println("Prodotti e Somma Prezzo per Categoria: ");
+        System.out.println(CategoriaETotale());
     }
          // ESERCIZIO 1
     public static List<Product> BooksFiltered(){
@@ -100,6 +110,7 @@ public class GestioneProdotti {
         return products;
     }
 
+
     //ESERCIZIO 1 GIORNO 2
 
     public static Map<Customer,List<Order>> RaggruppaOrdini(){
@@ -114,23 +125,38 @@ public class GestioneProdotti {
 
     //ESERCIZIO 2 GIORNO 2
 
-//    public static Map<Customer,List<Order>> TotaleVendite(){
-//        double TotaleOrdine = orderList.stream().
-//                mapToDouble(Product::get)
-//                .sum();
-//
-//        Map<Customer,List<Order>> mappaImportoTotale = orderList.stream().
-//                forEach(order -> order.getCustomer().);
-//    }
-//
+    public static Map<Customer,Double> TotaleVendite(){
+        return orderList.stream()
+                .collect(Collectors.groupingBy(Order::getCustomer,Collectors.summingDouble(Order::priceTotal)));
+
+
+    }
+
     //ESERCIZIO 3 GIORNO 2
 
-//    public static Optional<Product> AcquistoPiuCostoso(){
-//        Optional<Product> IpiuCostosi = productList.stream().max(Comparator.comparing(Product::getPrice));
-//                return IpiuCostosi;
-//    }
+    public static List<Product> AcquistoPiuCostoso(){
+       return productList.stream()
+               .sorted(Comparator.comparing(Product::getPrice).reversed())
+               .limit(3).toList();
 
+    }
 
+    //ESERCIZIO 4 GIORNO 2
+
+    public static double MediaPrezzoOrdine(){
+        return orderList.stream()
+                .mapToDouble(Order::priceTotal)
+                .average() // calcola media
+                .orElse(0.0); // eccezione
+    }
+
+    //ESERCIZIO 5 GIORNO 2
+
+public static Map<String,Double> CategoriaETotale(){
+        return productList.stream()
+                .collect(Collectors.groupingBy(Product::getCategory,Collectors.summingDouble(Product::getPrice)));
+           // groupingBy ---> raggruppa per ;
+    }
 
 
 
