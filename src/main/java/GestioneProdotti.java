@@ -1,7 +1,9 @@
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class GestioneProdotti {
@@ -12,6 +14,8 @@ public class GestioneProdotti {
 
 
     public static void main(String[] args) {
+
+        Logger log = LoggerFactory.getLogger(GestioneProdotti.class);
 
         createProductList();
         createCustomerList();
@@ -41,6 +45,16 @@ public class GestioneProdotti {
         System.out.println("--- Esercizio 4 ---");
         getTierProducts().forEach(System.out::println);
 
+        //ESERCIZIO 1 GIORNO 2
+        System.out.println("Esercizio 1 Giorno 2");
+        StampaOrdini();
+
+        //ESERCIZIO 2 GIORNO 2
+
+
+        //ESERCIZIO 3 GIORNO 2
+//        System.out.println("Acquisto piu Costoso: ");
+//        AcquistoPiuCostoso();
 
     }
          // ESERCIZIO 1
@@ -85,6 +99,40 @@ public class GestioneProdotti {
         }
         return products;
     }
+
+    //ESERCIZIO 1 GIORNO 2
+
+    public static Map<Customer,List<Order>> RaggruppaOrdini(){
+        Map<Customer,List<Order>> mappaOrdini = orderList.stream().
+                collect(Collectors.groupingBy(Order::getCustomer));
+        return mappaOrdini;
+
+    }
+    public static void StampaOrdini(){
+       RaggruppaOrdini().forEach((key,value)-> System.out.println("Raggruppa Ordini: " + key + " "+ value));
+    }
+
+    //ESERCIZIO 2 GIORNO 2
+
+//    public static Map<Customer,List<Order>> TotaleVendite(){
+//        double TotaleOrdine = orderList.stream().
+//                mapToDouble(Product::get)
+//                .sum();
+//
+//        Map<Customer,List<Order>> mappaImportoTotale = orderList.stream().
+//                forEach(order -> order.getCustomer().);
+//    }
+//
+    //ESERCIZIO 3 GIORNO 2
+
+//    public static Optional<Product> AcquistoPiuCostoso(){
+//        Optional<Product> IpiuCostosi = productList.stream().max(Comparator.comparing(Product::getPrice));
+//                return IpiuCostosi;
+//    }
+
+
+
+
 
         public static void createProductList(){
 
